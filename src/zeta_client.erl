@@ -37,9 +37,10 @@ init([Host, Port]) ->
                          [binary, {active, false}],
                          5000) of
         {ok, TCPSock} ->
+			error_logger:info_msg("zeta_client connection opened. Host:~p   Port:~p~n",[Host,Port]),
             {ok, #st{udp = UDPSock, tcp = TCPSock, host = Host, port = Port}};
         {error, econnrefused} ->
-            error_logger:info_msg("zeta_client connection refused"),
+            error_logger:info_msg("zeta_client connection refused:  Host:~p  Port:~p~n",[Host, Port]),
             {stop, {shutdown, econnrefused}}
     end.
 
@@ -54,6 +55,7 @@ terminate(_Reason, #st{udp = UDPSock, tcp = TCPSock}) ->
     end.
     
 handle_call({events, Msg}, _From, St = #st{tcp = TCP}) ->
+	error_logger:info_msg("Msg:~p~n",[Msg]),
     case gen_tcp:send(TCP, Msg) of
         ok ->
             case gen_tcp:recv(TCP, 0, 2000) of

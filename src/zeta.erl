@@ -89,6 +89,7 @@ sv(Loc, Metric, State) -> sv(Loc, Metric, State, []).
 sv(Loc, Metric, State, Opts) ->
     E = ev(Loc, Metric, State, Opts),
     M = #zeta_msg{zevents = [E]},
+	
     Data = zeta_pb:encode(M),
     Length = byte_size(Data),
     do([error_m || 
