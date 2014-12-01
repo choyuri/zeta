@@ -38,7 +38,7 @@ ev({Host, Service}, Metric) when is_list(Host) ->
 ev({Host, Service}, Metric) when is_atom(Host) ->
     E = ev(Service, Metric),
     E#zeta_event{host = atom_to_list(Host)};
-ev(Service, Metric) when is_number(Metric) ->
+ev(Service, Metric) -> %when is_number(Metric) ->
     #zeta_event{service = stringify(Service), metric_f = Metric}.
 
 stringify(Thing = [X | _]) when is_integer(X) -> Thing;
